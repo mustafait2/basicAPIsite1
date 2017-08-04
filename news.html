@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>news</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+
+<div id="root">
+    <div class="container">
+        <message v-for="message in messages" :title="message.title" :body="message.body"></message>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://unpkg.com/vue@2.4.2"></script>
+<script src="news.js"></script>
+<script>
+    var vm = new Vue({
+        el: "#root",
+        data: {
+            messages:[],
+        },
+        mounted:function(){
+            this.getMessages();
+        },
+        methods:{
+            getMessages(){
+                $.ajax({
+                    url:'https://offline-news-api.herokuapp.com/stories',
+                    type:'GET',
+                    dataType:'json',
+                    success:function (results) {
+                        vm.messages = results;
+                    }
+                });
+            }
+        }
+    });
+</script>
+</body>
+</html>
